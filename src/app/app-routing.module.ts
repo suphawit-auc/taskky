@@ -8,6 +8,7 @@ import { EditTaskComponent } from './pages/edit-task/edit-task.component'
 import { TaskDetailComponent } from './pages/task-detail/task-detail.component'
 import { PhotoViewerComponent } from './pages/photo-viewer/photo-viewer.component'
 import { AboutUsComponent } from './pages/about-us/about-us.component'
+import { CompleteTaskComponent } from './pages/complete-task/complete-task.component'
 
 const routes: Routes = [
   { path: '', component: HomeComponent },
@@ -16,6 +17,7 @@ const routes: Routes = [
   { path: 'edit/:id', component: EditTaskComponent },
   { path: 'photo/:src', component: PhotoViewerComponent },
   { path: 'about', component: AboutUsComponent },
+  { path: 'complete',component: CompleteTaskComponent },
 ]
 
 @NgModule({

@@ -91,6 +91,7 @@ export class TaskListComponent implements AfterViewInit {
     checklist(id : number){
         this.checklist_id = id
         setTimeout(() => {
+            this.taskService.completeTask(id)
             this.taskService.deleteTask(id)
             this.checklist_id = undefined
         }, 300);
