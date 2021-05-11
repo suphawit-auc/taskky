@@ -9,19 +9,24 @@ import { Task } from './task'
 })
 export class TaskService {
     private tasks: Array<any>;
-
+    private completes: Array<any>;
     public constructor() { 
         const openFirstTime = AppSettings.getBoolean("FistTime");
 
         /* check using app first time or not */
         if(openFirstTime == null || openFirstTime == undefined){
             this.tasks = []
+            this.completes=[]
             AppSettings.setString("TaskData", JSON.stringify(this.tasks)); // store tasks data
+            AppSettings.setString("TaskComplete", JSON.stringify(this.completes));
             AppSettings.setBoolean("FistTime", false);
         }
         else {
             this.tasks = JSON.parse(AppSettings.getString("TaskData")); // get task data that store in app settings
             this.tasks.forEach((task) => {task.due_date = new Date(Date.parse(task.due_date))}) // convert from string to Date type
+            this.completes = JSON.parse(AppSettings.getString("TaskComplete")); 
+            
+        
         }
     }
 
@@ -31,6 +36,10 @@ export class TaskService {
 
     public getTasks(): Array<any> {
         return this.tasks;
+    }
+
+    public getCompleteTask(): Array<any>{
+        return this.completes;
     }
 
     public getTask(id: number){
@@ -94,6 +103,30 @@ export class TaskService {
         this.tasks.map(task => task.id = this.tasks.indexOf(task)) // reorder id
         AppSettings.setString("TaskData", JSON.stringify(this.tasks))
     }
+
+
+    public completeTask(id:number){
+        let last_id: number;
+        let x=this.completes.filter(x => x.id == id)[0];
+        this.completes.length > 0 ? last_id=this.completes[this.completes.length-1].id : last_id=0
+        this.completes.push(
+            {
+              'id': last_id+1,
+              'name': x.name,
+              'detail': x.detail,
+              'due_date': x.due_date,
+              'photo': x.photo,
+              'notify': x.notify,
+              'overdue': x.overdue,
+            }
+        );
+        this.completes.sort((a, b) => a.due_date < b.due_date ? -1 : a.due_date > b.due_date ? 1 : 0) // sort tasks by due date
+        this.completes.map(completeTask => completeTask.id = this.completes.indexOf(completeTask)) // reorder id
+        AppSettings.setString("TaskComplete", JSON.stringify(this.completes));
+    }
+
+    
+    
 
     private setNotify(id:number, name:string, datetime:Date){
         let date_notify = new Date(datetime.getFullYear(), datetime.getMonth(), datetime.getDate()-1,
