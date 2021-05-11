@@ -107,7 +107,7 @@ export class TaskService {
 
     public completeTask(id:number){
         let last_id: number;
-        let x=this.completes.filter(x => x.id == id)[0];
+        let x=this.tasks.filter(x => x.id == id)[0];
         this.completes.length > 0 ? last_id=this.completes[this.completes.length-1].id : last_id=0
         this.completes.push(
             {
