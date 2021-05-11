@@ -104,6 +104,19 @@ export class TaskService {
         AppSettings.setString("TaskData", JSON.stringify(this.tasks))
     }
 
+    public deleteCompleteTask(id:number){
+        for(let i = 0; i < this.completes.length; i++) {
+            if(this.completes[i].id == id) {
+              this.completes.splice(i, 1);
+              this.completes.sort((a, b) => a.due_date < b.due_date ? -1 : a.due_date > b.due_date ? 1 : 0) // sort tasks by due date
+              break;
+            }
+        }
+        this.completes.map(completeTask => completeTask.id = this.completes.indexOf(completeTask)) 
+        AppSettings.setString("TaskComplete", JSON.stringify(this.completes));
+    }
+
+
 
     public completeTask(id:number){
         let last_id: number;

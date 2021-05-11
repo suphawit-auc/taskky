@@ -14,6 +14,7 @@ import { DatePipe } from '@angular/common'
 export class CompleteTaskComponent {
   task;
   complete;
+  checklist_id;
   constructor(public route: ActivatedRoute,
               public taskService: TaskService,
               public location: Location,
@@ -51,5 +52,16 @@ formatString(str: string, ...val: string[]) {
       str = str.replace(`{${index}}`, val[index]);
     }
     return str;
+}
+
+
+checklist(id : number){
+    this.checklist_id = id
+    let x=this.complete.filter(x => x.id == id)[0];
+    setTimeout(() => {
+        this.taskService.addTask(x.name, x.detail, x.due_date, x.photo, x.notify, x.overdue)
+        this.taskService.deleteCompleteTask(id)
+        this.checklist_id = undefined
+    }, 300);
 }
 }
